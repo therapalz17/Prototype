@@ -279,7 +279,7 @@ void pulse()
 void loop() {
   int prevTime;
   int curTime;
-  int curInactive, preInactive, snoozeTime;
+  int curInactive, preInactive, snoozeTime; //initalize snoozeTime here if you want to increase how long the animal is asleep for
   
     
   heart.update();
@@ -295,7 +295,8 @@ void loop() {
     return;
   }
   
-  for (uint8_t i=0; i<8; i++) {
+  for (uint8_t i=0; i<8; i++) {     //if you want to decrease sensitivity to capacitive touch, can add delay in this for loop
+    //delay(100);
     if (all_touched & (1 << i)) {
       if(i == 1) {          //just test pins; can change to any value of 'i'
         pin1 = 1;
@@ -322,19 +323,19 @@ void loop() {
     }
   }
 
-  if(touched == 0) {
-    if(snoozeWaiting){
+  while(touched == 0) {
+    if(snoozeWaiting) {
       curInactive = millis();
-      if(curInactive - prevInactive >= snoozeTime){
+      if(curInactive - prevInactive >= snoozeTime) {      //set snoozeTime to initial value if you want to specify a delay time
           snooze();
       }
     }
-    else{
+    else {
       snoozeWaiting = 1;
       prevInactive = millis();
     }
   }
-  else{
+  else {
     snoozeWaiting = 0;
   }
 
